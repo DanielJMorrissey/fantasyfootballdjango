@@ -18,6 +18,10 @@ from django.urls import path, include
 
 urlpatterns = [
     path('', include(('homepage.urls', 'homepage'), namespace='homepage')),
-    path('loginregistration', include(('loginregistration.urls', 'loginregistration'), namespace='loginregistration')),
+    path('loginregistration/', include(('loginregistration.urls', 'loginregistration'), namespace='loginregistration')),
+    path('players/', include(('players.urls', 'players'), namespace='players')),
+    path('scorecalculator/', include(('scorecalculator.urls', 'score'), namespace='score')),
+    path('transfers/', include(('transfers.urls', 'transfers'), namespace='transfers')),
+    path('usersettings/', include(('usersettings.urls', 'usersettings'), namespace='usersettings')),
     path('admin/', admin.site.urls),
 ]

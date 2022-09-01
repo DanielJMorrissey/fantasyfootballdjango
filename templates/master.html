@@ -57,7 +57,7 @@
       <nav class="site-navigation position-relative text-right bg-black text-md-right" role="navigation">
         <div class="container position-relative">
           <div class="site-logo">
-            <a href="index.html"><img src="{% static 'images/logo.png' %}" alt=""></a>
+            <a href="{% url 'homepage:homepage' %}"><img src="{% static 'images/logo.png' %}" alt=""></a>
           </div>
 
           <div class="d-inline-block d-md-none ml-md-0 mr-auto py-3"><a href="#" class="site-menu-toggle js-menu-toggle text-white"><span class="icon-menu h3"></span></a></div>
@@ -69,10 +69,12 @@
             <li>
               <a href="{% url 'loginregistration:login' %}">Log In</a>
             </li>
-            <li><a href="matches.html">Matches</a></li>
-            <li><a href="team.html">Team</a></li>
-            <li><a href="about.html">About</a></li>
-            <li><a href="contact.html">Contact</a></li>
+            <li><a href="{% url 'loginregistration:register' %}">Register</a></li>
+            <li><a href="{% url 'players:players' %}">Players</a></li>
+            <li><a href="{% url 'transfers:transferIn' %}">Buy Players</a></li>
+            <li><a href="{% url 'transfers:transferOut' %}">Sell Players</a></li>
+            <li><a href="{% url 'score:score' %}">Calculate Score</a></li>
+            <li><a href="{% url 'usersettings:settings' %}">User Settings</a></li>
           </ul>
         </div>
       </nav>
