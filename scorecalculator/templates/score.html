@@ -1,76 +1,215 @@
 {% extends 'master.html' %}
 {% load static %}
 
-    
+    {% comment %}
+      will need to replace first and last name fields with select tag that contains players part of users team
+    {% endcomment %}
 
   {% block main %}
-  <div class="site-blocks-cover overlay" style="background-image: url('../static/images/hero_bg_3.jpg');" data-aos="fade" data-stellar-background-ratio="0.5">
-    <div class="container">
-      <div class="row align-items-center justify-content-start">
-        <div class="col-md-6 text-center text-md-left" data-aos="fade-up" data-aos-delay="400">
-          <h1 class="bg-text-line">Contact Us</h1>
-          <p class="mt-4">Lorem ipsum dolor sit amet consectetur adipisicing elit. Ad maxime velit nostrum praesentium voluptatem. Mollitia perferendis dolore dolores.</p>
-        </div>
-      </div>
-    </div>
-  </div>
-
-
-  <div class="site-section bg-light" data-aos="fade-up">
+  <div class="site-section bg-light" data-aos="fade-up" style="background-image: url('../static/images/hero_bg_3.jpg'); background-size: cover;">
     <div class="container">
       <div class="row align-items-first">
-        <div class="col-md-7">
+        <div class="col-md-7 h-100">
           <form action="#" method="post" class="bg-white">
             
             <div class="p-3 p-lg-5 border">
               <div class="form-group row">
                 <div class="col-md-6">
-                  <label for="c_fname" class="text-black">First Name <span class="text-danger">*</span></label>
-                  <input type="text" class="form-control" id="c_fname" name="c_fname">
+                  <label for="fname" class="text-black">First Name <span class="text-danger">*</span></label>
+                  <input type="text" class="form-control" id="fname" name="fname">
                 </div>
                 <div class="col-md-6">
-                  <label for="c_lname" class="text-black">Last Name <span class="text-danger">*</span></label>
-                  <input type="text" class="form-control" id="c_lname" name="c_lname">
+                  <label for="lname" class="text-black">Last Name <span class="text-danger">*</span></label>
+                  <input type="text" class="form-control" id="lname" name="lname">
                 </div>
               </div>
-              <div class="form-group row">
-                <div class="col-md-12">
-                  <label for="c_email" class="text-black">Email <span class="text-danger">*</span></label>
-                  <input type="email" class="form-control" id="c_email" name="c_email" placeholder="">
+              <div class="form-group row d-flex align-items-center">
+                <div class="col-md-6">
+                  <label for="played" class="text-black">How many minutes <span class="text-danger">*</span></label>
+                </div>
+                <div class="col-md-6">
+                  <input type="number" class="form-control" id="played" name="played" value="0" min="0" step="1"/>
                 </div>
               </div>
-              <div class="form-group row">
-                <div class="col-md-12">
-                  <label for="c_subject" class="text-black">Subject </label>
-                  <input type="text" class="form-control" id="c_subject" name="c_subject">
+              <div class="form-group row d-flex align-items-center">
+                <div class="col-md-6">
+                  <label for="goalScored" class="text-black">Goals Scored <span class="text-danger">*</span></label>
+                </div>
+                <div class="col-md-6">
+                  <input type="number" class="form-control" id="goalScored" name="goalScored" value="0" min="0" step="1"/>
                 </div>
               </div>
-
-              <div class="form-group row">
-                <div class="col-md-12">
-                  <label for="c_message" class="text-black">Message </label>
-                  <textarea name="c_message" id="c_message" cols="30" rows="7" class="form-control"></textarea>
+              <div class="form-group row d-flex align-items-center">
+                <div class="col-md-6">
+                  <label for="goalAssisted" class="text-black">Goals Assisted <span class="text-danger">*</span></label>
+                </div>
+                <div class="col-md-6">
+                  <input type="number" class="form-control" id="goalAssisted" name="goalAssisted" value="0" min="0" step="1"/>
+                </div>
+              </div>
+              {% comment %}
+                make below only appear for goalkeepers
+              {% endcomment %}
+              <div class="form-group row d-flex align-items-center">
+                <div class="col-md-6">
+                  <label for="shotSaved" class="text-black">Shots Saved <span class="text-danger">*</span></label>
+                </div>
+                <div class="col-md-6">
+                  <input type="number" class="form-control" id="shotSaved" name="shotSaved" value="0" min="0" step="1"/>
+                </div>
+              </div>
+              <div class="form-group row d-flex align-items-center">
+                <div class="col-md-6">
+                  <label for="penSaved" class="text-black">Penalties Saved <span class="text-danger">*</span></label>
+                </div>
+                <div class="col-md-6">
+                  <input type="number" class="form-control" id="penSaved" name="penSaved" value="0" min="0" step="1"/>
+                </div>
+              </div>
+              <div class="form-group row d-flex align-items-center">
+                <div class="col-md-6">
+                  <label for="penMissed" class="text-black">Penalties Missed <span class="text-danger">*</span></label>
+                </div>
+                <div class="col-md-6">
+                  <input type="number" class="form-control" id="penMissed" name="penMissed" value="0" min="0" step="1"/>
+                </div>
+              </div>
+              <div class="form-group row d-flex align-items-center">
+                <div class="col-md-6">
+                  <label for="goalConceded" class="text-black">Goals Conceded <span class="text-danger">*</span></label>
+                </div>
+                <div class="col-md-6">
+                  <input type="number" class="form-control" id="goalConceded" name="goalConceded" value="0" min="0" step="1"/>
+                </div>
+              </div>
+              <div class="form-group row d-flex align-items-center">
+                <div class="col-md-6">
+                  <label for="freeConceded" class="text-black">Free Kicks Conceded <span class="text-danger">*</span></label>
+                </div>
+                <div class="col-md-6">
+                  <input type="number" class="form-control" id="freeConceded" name="freeConceded" value="0" min="0" step="1"/>
+                </div>
+              </div>
+              <div class="form-group row d-flex align-items-center">
+                <div class="col-md-6">
+                  <label for="penConceded" class="text-black">Penalties Conceded <span class="text-danger">*</span></label>
+                </div>
+                <div class="col-md-6">
+                  <input type="number" class="form-control" id="penConceded" name="penConceded" value="0" min="0" step="1"/>
+                </div>
+              </div>
+              <div class="form-group row d-flex align-items-center">
+                <div class="col-md-6">
+                  <label class="text-black">Man of the Match <span class="text-danger">*</span></label>
+                </div>
+                <div class="col-md-2">
+                  <input type="checkbox" class="form-control" id="manMatch" name="manMatch" value="yes" style="height: 1.5em;"/>
+                </div>
+              </div>
+              <div class="form-group row d-flex align-items-center">
+                <div class="col-md-6">
+                  <label for="yellow" class="text-black">Yellow Cards <span class="text-danger">*</span></label>
+                </div>
+                <div class="col-md-6">
+                  <input type="number" class="form-control" id="yellow" name="yellow" value="0" min="0" max="2" step="1"/>
+                </div>
+              </div>
+              <div class="form-group row d-flex align-items-center">
+                <div class="col-md-6">
+                  <label for="red" class="text-black">Red Cards <span class="text-danger">*</span></label>
+                </div>
+                <div class="col-md-6">
+                  <input type="number" class="form-control" id="red" name="red" value="0" min="0" max="1" step="1"/>
+                </div>
+              </div>
+              <div class="form-group row d-flex align-items-center">
+                <div class="col-md-6">
+                  <label for="ownGoal" class="text-black">Own Goals <span class="text-danger">*</span></label>
+                </div>
+                <div class="col-md-6">
+                  <input type="number" class="form-control" id="ownGoal" name="ownGoal" value="0" min="0" step="1"/>
                 </div>
               </div>
               <div class="form-group row">
                 <div class="col-lg-12">
-                  <input type="submit" class="btn btn-primary btn-lg btn-block" value="Send Message">
+                  <input type="submit" class="btn btn-primary btn-lg btn-block" value="Calculate Score">
                 </div>
               </div>
             </div>
           </form>
         </div>
 
-        <div class="col-md-5">
+        <div class="col-md-5 h-100">
           <div class="p-4 border mb-3 bg-white">
-            <p class="mb-0">Address</p>
-            <p class="mb-4">203 Fake St. Mountain View, San Francisco, California, USA</p>
-
-            <p class="mb-0">Phone</p>
-            <p class="mb-4"><a href="#">+1 232 3235 324</a></p>
-
-            <p class="mb-0">Email Address</p>
-            <p class="mb-4"><a href="#">youremail@domain.com</a></p>
+            <p class="mb-0"><b>Score Rules</b></p>
+            <table class="scoring">
+              <tr>
+                  <th>Action</th><th class="col-sm-1">Point(s)</th>
+              </tr>
+              <tr>
+                  <td>Not playing</td><td class="col-sm-1">0</td>
+              </tr>
+              <tr>
+                  <td>Playing for 60 minutes or less</td><td class="col-sm-1">1</td>
+              </tr>
+              <tr>
+                  <td>Playing for 61 minutes or more</td><td class="col-sm-1">2</td>
+              </tr>
+              <tr>
+                  <td>Goal scored by a goalkeeper</td><td class="col-sm-1">7</td>
+              </tr>
+              <tr>
+                  <td>Goal scored by a defender</td><td class="col-sm-1">6</td>
+              </tr>
+              <tr>
+                  <td>Goal scored by a midfielder</td><td class="col-sm-1">5</td>
+              </tr>
+              <tr>
+                  <td>Goal scored by a forward</td><td class="col-sm-1">4</td>
+              </tr>
+              <tr>
+                  <td>Goal assist by a defender or goalkeeper</td><td class="col-sm-1">6</td>
+              </tr>
+              <tr>
+                  <td>Goal assist by a midfielder or forward</td><td class="col-sm-1">5</td>
+              </tr>
+              <tr>
+                  <td>Clean sheet by a goalkeeper or defender</td><td class="col-sm-1">4</td>
+              </tr>
+              <tr>
+                  <td>Clean sheet by a midfielder</td><td class="col-sm-1">5</td>
+              </tr>
+              <tr>
+                  <td>Every 4 shots saved by a goalkeeper</td><td class="col-sm-1">1</td>
+              </tr>
+              <tr>
+                  <td>For every penalty save</td><td class="col-sm-1">5</td>
+              </tr>
+              <tr>
+                  <td>For every penalty miss</td><td class="col-sm-1">-5</td>
+              </tr>
+              <tr>
+                  <td>For conceding a free kick</td><td class="col-sm-1">-1</td>
+              </tr>
+              <tr>
+                  <td>For conceding a penalty</td><td class="col-sm-1">-3</td>
+              </tr>
+              <tr>
+                  <td>Player being Man of the Match</td><td class="col-sm-1">2</td>
+              </tr>
+              <tr>
+                  <td>For every goal conceded</td><td class="col-sm-1">-1</td>
+              </tr>
+              <tr>
+                  <td>For each yellow card</td><td class="col-sm-1">-1</td>
+              </tr>
+              <tr>
+                  <td>For each red card</td><td class="col-sm-1">-3</td>
+              </tr>
+              <tr>
+                  <td>For each own goal</td><td class="col-sm-1">-3</td>
+              </tr>
+            </table>
 
           </div>
           
