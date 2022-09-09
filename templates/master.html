@@ -66,21 +66,18 @@
             <li>
               <a href="{% url 'homepage:homepage' %}">Home</a>
             </li>
-            {% for x in user %}
-            {% if x.signin == False %}
-            <li>
-              <a href="{% url 'loginregistration:login' %}">Sign In</a>
-            </li>
-            <li><a href="{% url 'loginregistration:register' %}">Register</a></li>
+            {% if user.signin %}
+              <li><a href="{% url 'players:players' %}">Players</a></li>
+              <li><a href="{% url 'transfers:transferIn' %}">Buy Players</a></li>
+              <li><a href="{% url 'transfers:transferOut' %}">Sell Players</a></li>
+              <li><a href="{% url 'score:score' %}">Calculate Score</a></li>
+              <li><a href="{% url 'usersettings:settings' %}">User Settings</a></li>
+            {% else %}
+              <li>
+                <a href="{% url 'loginregistration:login' %}">Sign In</a>
+              </li>
+              <li><a href="{% url 'loginregistration:register' %}">Register</a></li>
             {% endif %}
-            {% if x.signin %}
-            <li><a href="{% url 'players:players' %}">Players</a></li>
-            <li><a href="{% url 'transfers:transferIn' %}">Buy Players</a></li>
-            <li><a href="{% url 'transfers:transferOut' %}">Sell Players</a></li>
-            <li><a href="{% url 'score:score' %}">Calculate Score</a></li>
-            <li><a href="{% url 'usersettings:settings' %}">User Settings</a></li>
-            {% endif %}
-            {% endfor %}
           </ul>
         </div>
       </nav>

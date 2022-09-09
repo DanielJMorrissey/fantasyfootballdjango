@@ -15,9 +15,14 @@ from loginregistration.models import UserLoginReg
 
 # Create your views here.
 def home(request):
-  userLoggedIn = UserLoginReg.objects.all().values()
+  signedInUser = request.session.get('user')
+  if signedInUser:
+    userLoggedIn = UserLoginReg.objects.get(id=signedInUser)
+    context= {
+      'user' : userLoggedIn,
+    }
   template = loader.get_template('homepage.html')
-  context= {
-    'user' : userLoggedIn,
-  }
-  return HttpResponse(template.render(context, request))
+  if signedInUser:
+    return HttpResponse(template.render(context, request))
+  else:
+    return HttpResponse(template.render())
