@@ -1,7 +1,10 @@
 from django.shortcuts import render
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.template import loader
 from loginregistration.models import UserLoginReg
+from django.contrib.auth.hashers import make_password
+import re
+from django.urls import reverse
 
 # Create your views here.
 def login(request):
@@ -12,6 +15,43 @@ def login(request):
     }
     return HttpResponse(template.render(context, request))
 
+def computeLogin(request):
+    username = request.POST['username']
+    password = request.POST['password']
+    userLoggedIn = UserLoginReg.objects.all().values()
+    if username.length == 0:
+        # will need to add error message in template
+        usernameError = "A username is required!"
+        template = loader.get_template('login.html')
+        context = {
+            'user' : userLoggedIn,
+            'usernameError' : usernameError
+        }
+        return HttpResponse(template.render(context, request))
+    if password.length == 0:
+        # will need to add error message in template
+        passwordError = "A password is required!"
+        template = loader.get_template('login.html')
+        context = {
+            'passwordError' : passwordError
+        }
+        return HttpResponse(template.render(context, request))
+    user = UserLoginReg.objects.get(username=username)
+    password = make_password(password)
+    if user.username == username and user.password == password:
+        request.session['user'] = user.id
+        user.signin = True
+        success = "Welcome User!"
+        template = loader.get_template('homepage.html')
+        context = {
+            'success' : success,
+            'user': user,
+            'userSession' : request.session['user'],
+        }
+        return HttpResponse(template.render(context, request))
+
+
+
 def register(request):
     userLoggedIn = UserLoginReg.objects.all().values()
     template = loader.get_template('register.html')
@@ -19,3 +59,76 @@ def register(request):
         'user' : userLoggedIn,
     }
     return HttpResponse(template.render(context, request))
+
+def computeregistration(request):
+    username = request.POST['username']
+    teamName = request.POST['teamname']
+    password = request.POST['password']
+    confirmPassword = request.POST['passwordconfirm']
+    email = request.POST['email']
+    if username.length == 0 or teamName.length == 0 or password.length == 0 or confirmPassword.length == 0 or email.length == 0:
+        errorMessage = "A field is missing"
+        template = loader.get_template('register.html')
+        context = {
+            'errorMessage' : errorMessage
+        }
+        return HttpResponse(template.render(context, request))
+    else:
+        if password != confirmPassword:
+            errorMessage = "Passwords do not match"
+            template = loader.get_template('register.html')
+            context = {
+                'errorMessage' : errorMessage
+            }
+            return HttpResponse(template.render(context, request))
+        elif not re.match("^[a-zA-Z0-9-_]+@[a-zA-Z0-9]+\.[a-z]{1,3}$", email):
+            errorMessage = "Email is not in the correct format"
+            template = loader.get_template('register.html')
+            context = {
+                'errorMessage' : errorMessage
+            }
+            return HttpResponse(template.render(context, request))
+        else:
+            possibleUser = UserLoginReg.objects.get(username=username).count()
+            if possibleUser > 0:
+                errorMessage = "That username is taken"
+                template = loader.get_template('register.html')
+                context = {
+                    'errorMessage' : errorMessage
+                }
+                return HttpResponse(template.render(context, request))
+            possibleUser = UserLoginReg.objects.get(teamname=teamName).count()
+            if possibleUser > 0:
+                errorMessage = "That team name is taken"
+                template = loader.get_template('register.html')
+                context = {
+                    'errorMessage' : errorMessage
+                }
+                return HttpResponse(template.render(context, request))
+            possibleUser = UserLoginReg.objects.get(email=email).count()
+            if possibleUser > 0:
+                errorMessage = "That email is taken"
+                template = loader.get_template('register.html')
+                context = {
+                    'errorMessage' : errorMessage
+                }
+                return HttpResponse(template.render(context, request))
+            password = make_password(password)
+            newUser = UserLoginReg(username=username, email=email, signin=True, password=password, funds=100000000, score=0, teamname=teamName)
+            newUser.save()
+            request.session['user'] = newUser.id
+            success = "Welcome new User!"
+            template = loader.get_template('homepage.html')
+            context = {
+                'success' : success,
+                'user': newUser,
+                'userSession' : request.session['user'],
+            }
+            return HttpResponse(template.render(context, request))
+
+def signout(request):
+    user = UserLoginReg.objects.get(id=request.session['user'])
+    user.signin = False
+    del request.session['user']
+    return HttpResponseRedirect(reverse('login'))
+    
