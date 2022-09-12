@@ -19,7 +19,7 @@ def computeLogin(request):
     username = request.POST['username']
     password = request.POST['password']
     userLoggedIn = UserLoginReg.objects.all().values()
-    if username.length == 0:
+    if len(username) == 0:
         # will need to add error message in template
         usernameError = "A username is required!"
         template = loader.get_template('login.html')
@@ -28,7 +28,7 @@ def computeLogin(request):
             'usernameError' : usernameError
         }
         return HttpResponse(template.render(context, request))
-    if password.length == 0:
+    if len(password) == 0:
         # will need to add error message in template
         passwordError = "A password is required!"
         template = loader.get_template('login.html')
@@ -66,7 +66,7 @@ def computeregistration(request):
     password = request.POST['password']
     confirmPassword = request.POST['passwordconfirm']
     email = request.POST['email']
-    if username.length == 0 or teamName.length == 0 or password.length == 0 or confirmPassword.length == 0 or email.length == 0:
+    if len(username) == 0 or len(teamName) == 0 or len(password) == 0 or len(confirmPassword) == 0 or len(email) == 0:
         errorMessage = "A field is missing"
         template = loader.get_template('register.html')
         context = {
@@ -89,7 +89,7 @@ def computeregistration(request):
             }
             return HttpResponse(template.render(context, request))
         else:
-            possibleUser = UserLoginReg.objects.get(username=username).count()
+            possibleUser = UserLoginReg.objects.filter(username=username).count()
             if possibleUser > 0:
                 errorMessage = "That username is taken"
                 template = loader.get_template('register.html')
@@ -97,7 +97,7 @@ def computeregistration(request):
                     'errorMessage' : errorMessage
                 }
                 return HttpResponse(template.render(context, request))
-            possibleUser = UserLoginReg.objects.get(teamname=teamName).count()
+            possibleUser = UserLoginReg.objects.filter(teamname=teamName).count()
             if possibleUser > 0:
                 errorMessage = "That team name is taken"
                 template = loader.get_template('register.html')
@@ -105,7 +105,7 @@ def computeregistration(request):
                     'errorMessage' : errorMessage
                 }
                 return HttpResponse(template.render(context, request))
-            possibleUser = UserLoginReg.objects.get(email=email).count()
+            possibleUser = UserLoginReg.objects.filter(email=email).count()
             if possibleUser > 0:
                 errorMessage = "That email is taken"
                 template = loader.get_template('register.html')

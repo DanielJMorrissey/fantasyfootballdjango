@@ -5,7 +5,7 @@ from loginregistration.models import UserLoginReg
 
 """
   need to sort out for log in and reg:
-    sort out bugs
+    sort out background image bug, debug login and log out
     make only a single user can be logged in at a time
     each view checks if logged in
     if logged in or registered, log in and reg page won't show
