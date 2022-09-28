@@ -14,6 +14,7 @@
             </div>
           </div>
         </div>
+        
       </div>  
 
       <div class="site-blocks-cover overlay" style="background-image: url('../static/images/hero_bg_4.jpg');" data-aos="fade" data-stellar-background-ratio="0.5">
@@ -38,6 +39,9 @@
         </div>
       </div>  
     </div>
+    <div>
+      {{user.id}}
+    </div>
     
 
     <div class="site-section pt-0 feature-blocks-1" data-aos="fade" data-aos-delay="100">
@@ -48,7 +52,7 @@
               <div class="text">
                 <h2 class="h5 text-white">Russia's World Cup Championship</h2>
                 <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Eos repellat autem illum nostrum sit distinctio!</p>
-                <p class="mb-0"><a href="#" class="btn btn-primary btn-sm px-4 py-2 rounded-0">Read More</a></p>
+                <p class="mb-0"><a href="#" class="btn btn-primary btn-sm px-4 py-2 rounded-0">Read More test {{user.id}}, {{ request }}</a></p>
               </div>
             </div>
           </div>

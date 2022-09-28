@@ -5,7 +5,9 @@ from loginregistration.models import UserLoginReg
 
 """
   need to sort out for log in and reg:
-    sort out background image bug, debug login and log out
+    probably sorted out image bug by using redirect
+    need to check if there is a user in db and session
+    debug login and log out
     make only a single user can be logged in at a time
     each view checks if logged in
     if logged in or registered, log in and reg page won't show
@@ -13,14 +15,15 @@ from loginregistration.models import UserLoginReg
 
 # Create your views here.
 def home(request):
-  signedInUser = request.session.get('user')
-  if signedInUser:
-    userLoggedIn = UserLoginReg.objects.get(id=signedInUser)
+  userLoggedIn = UserLoginReg.objects.get(id=request.session['user'])
+  if userLoggedIn:
+    
     context= {
       'user' : userLoggedIn,
+      'request': request.session['user']
     }
   template = loader.get_template('homepage.html')
-  if signedInUser:
+  if userLoggedIn:
     return HttpResponse(template.render(context, request))
   else:
     return HttpResponse(template.render())

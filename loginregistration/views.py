@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponse, HttpResponseRedirect
 from django.template import loader
 from loginregistration.models import UserLoginReg
@@ -124,11 +124,11 @@ def computeregistration(request):
                 'user': newUser,
                 'userSession' : request.session['user'],
             }
-            return HttpResponse(template.render(context, request))
+            return redirect('homepage:homepage')
 
 def signout(request):
     user = UserLoginReg.objects.get(id=request.session['user'])
     user.signin = False
-    del request.session['user']
+    request.session['user'] = False
     return HttpResponseRedirect(reverse('login'))
     
