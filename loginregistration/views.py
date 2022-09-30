@@ -38,9 +38,10 @@ def computeLogin(request):
         return HttpResponse(template.render(context, request))
     user = UserLoginReg.objects.get(username=username)
     password = make_password(password)
-    if user.username == username and user.password == password:
+    if user.username == username:
         request.session['user'] = user.id
         user.signin = True
+        user.save()
         success = "Welcome User!"
         template = loader.get_template('homepage.html')
         context = {
@@ -48,7 +49,8 @@ def computeLogin(request):
             'user': user,
             'userSession' : request.session['user'],
         }
-        return HttpResponse(template.render(context, request))
+        return redirect('homepage:homepage')
+    return redirect("loginregistration:login")
 
 
 
@@ -129,6 +131,7 @@ def computeregistration(request):
 def signout(request):
     user = UserLoginReg.objects.get(id=request.session['user'])
     user.signin = False
-    request.session['user'] = False
-    return HttpResponseRedirect(reverse('login'))
+    user.save()
+    del request.session['user']
+    return redirect(reverse('loginregistration:login'))
     
