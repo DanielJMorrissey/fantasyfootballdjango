@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse, HttpResponseRedirect
 from django.template import loader
 from loginregistration.models import UserLoginReg
-from django.contrib.auth.hashers import make_password
+from django.contrib.auth.hashers import make_password, check_password
 import re
 from django.urls import reverse
 
@@ -37,8 +37,8 @@ def computeLogin(request):
         }
         return HttpResponse(template.render(context, request))
     user = UserLoginReg.objects.get(username=username)
-    password = make_password(password)
-    if user.username == username:
+    password = make_password(password, salt="please")
+    if user.username == username and user.password == password:
         request.session['user'] = user.id
         user.signin = True
         user.save()
@@ -115,7 +115,7 @@ def computeregistration(request):
                     'errorMessage' : errorMessage
                 }
                 return HttpResponse(template.render(context, request))
-            password = make_password(password)
+            password = make_password(password, salt="please")
             newUser = UserLoginReg(username=username, email=email, signin=True, password=password, funds=100000000, score=0, teamname=teamName)
             newUser.save()
             request.session['user'] = newUser.id

@@ -5,12 +5,9 @@ from loginregistration.models import UserLoginReg
 
 """
   need to sort out for log in and reg:
-    probably sorted out image bug by using redirect
-    need to check if there is a user in db and session
-    need to check if form password matches db password for computelogin
+    prevent user from accessing login and reg pages after log in and reg
     make only a single user can be logged in at a time
     each view checks if logged in
-    if logged in or registered, log in and reg page won't show
 """
 
 # Create your views here.
