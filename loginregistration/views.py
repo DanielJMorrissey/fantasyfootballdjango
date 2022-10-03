@@ -8,12 +8,15 @@ from django.urls import reverse
 
 # Create your views here.
 def login(request):
-    userLoggedIn = UserLoginReg.objects.all().values()
-    template = loader.get_template('login.html')
-    context= {
-        'user' : userLoggedIn,
-    }
-    return HttpResponse(template.render(context, request))
+    if "user" not in request.session:
+        userLoggedIn = UserLoginReg.objects.all().values()
+        template = loader.get_template('login.html')
+        context= {
+            'user' : userLoggedIn,
+        }
+        return HttpResponse(template.render(context, request))
+    else:
+        return redirect("homepage:homepage")
 
 def computeLogin(request):
     username = request.POST['username']
@@ -55,12 +58,15 @@ def computeLogin(request):
 
 
 def register(request):
-    userLoggedIn = UserLoginReg.objects.all().values()
-    template = loader.get_template('register.html')
-    context= {
-        'user' : userLoggedIn,
-    }
-    return HttpResponse(template.render(context, request))
+    if "user" not in request.session:
+        userLoggedIn = UserLoginReg.objects.all().values()
+        template = loader.get_template('register.html')
+        context= {
+            'user' : userLoggedIn,
+        }
+        return HttpResponse(template.render(context, request))
+    else:
+        return redirect("homepage:homepage")
 
 def computeregistration(request):
     username = request.POST['username']
@@ -83,7 +89,7 @@ def computeregistration(request):
                 'errorMessage' : errorMessage
             }
             return HttpResponse(template.render(context, request))
-        elif not re.match("^[a-zA-Z0-9-_]+@[a-zA-Z0-9]+\.[a-z]{1,3}$", email):
+        elif not re.match("^[a-zA-Z0-9-_]+@[a-zA-Z0-9.]+\.[a-z]{1,3}$", email):
             errorMessage = "Email is not in the correct format"
             template = loader.get_template('register.html')
             context = {

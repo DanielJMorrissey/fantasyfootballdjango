@@ -5,9 +5,7 @@ from loginregistration.models import UserLoginReg
 
 """
   need to sort out for log in and reg:
-    prevent user from accessing login and reg pages after log in and reg
-    make only a single user can be logged in at a time
-    each view checks if logged in
+    improve validation - JavaScript and python
 """
 
 # Create your views here.
