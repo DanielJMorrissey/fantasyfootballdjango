@@ -21,27 +21,38 @@ def login(request):
 def computeLogin(request):
     username = request.POST['username']
     password = request.POST['password']
-    userLoggedIn = UserLoginReg.objects.all().values()
     if len(username) == 0:
-        # will need to add error message in template
+        if "errorMessage" in request.session:
+            del request.session["errorMessage"]
+        if "passErrorMessage" in request.session:
+            del request.session["passErrorMessage"]
         usernameError = "A username is required!"
-        template = loader.get_template('login.html')
-        context = {
-            'user' : userLoggedIn,
-            'usernameError' : usernameError
-        }
-        return HttpResponse(template.render(context, request))
+        request.session["errorMessage"] = usernameError
+        return redirect("loginregistration:login")
     if len(password) == 0:
-        # will need to add error message in template
+        if "errorMessage" in request.session:
+            del request.session["errorMessage"]
+        if "passErrorMessage" in request.session:
+            del request.session["passErrorMessage"]
         passwordError = "A password is required!"
-        template = loader.get_template('login.html')
-        context = {
-            'passwordError' : passwordError
-        }
-        return HttpResponse(template.render(context, request))
+        request.session["passErrorMessage"] = passwordError
+        return redirect("loginregistration:login")
+    userCheck = UserLoginReg.objects.filter(username=username).count()
+    if userCheck != 1:
+        if "errorMessage" in request.session:
+            del request.session["errorMessage"]
+        if "passErrorMessage" in request.session:
+            del request.session["passErrorMessage"]
+        errorMessage = "Wrong Username given!"
+        request.session["errorMessage"] = errorMessage
+        return redirect("loginregistration:login")
     user = UserLoginReg.objects.get(username=username)
     password = make_password(password, salt="please")
     if user.username == username and user.password == password:
+        if "errorMessage" in request.session:
+            del request.session["errorMessage"]
+        if "passErrorMessage" in request.session:
+            del request.session["passErrorMessage"]
         request.session['user'] = user.id
         user.signin = True
         user.save()
@@ -53,6 +64,14 @@ def computeLogin(request):
             'userSession' : request.session['user'],
         }
         return redirect('homepage:homepage')
+    elif user.password != password:
+        if "errorMessage" in request.session:
+            del request.session["errorMessage"]
+        if "passErrorMessage" in request.session:
+            del request.session["passErrorMessage"]
+        passErrorMessage = "Incorrect password"
+        request.session["passErrorMessage"] = passErrorMessage
+        return redirect("loginregistration:login")
     return redirect("loginregistration:login")
 
 

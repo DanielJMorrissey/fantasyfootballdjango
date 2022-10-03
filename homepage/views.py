@@ -5,6 +5,7 @@ from loginregistration.models import UserLoginReg
 
 """
   need to sort out for log in and reg:
+    need to find a way to only show error message when returning to site
     improve validation - JavaScript and python
 """
 
