@@ -20,6 +20,7 @@ def login(request):
 
 def computeLogin(request):
     username = request.POST['username']
+    username = username.strip()
     password = request.POST['password']
     if len(username) == 0:
         if "errorMessage" in request.session:
@@ -28,6 +29,7 @@ def computeLogin(request):
             del request.session["passErrorMessage"]
         usernameError = "A username is required!"
         request.session["errorMessage"] = usernameError
+        request.session.set_expiry(300)
         return redirect("loginregistration:login")
     if len(password) == 0:
         if "errorMessage" in request.session:
@@ -36,6 +38,7 @@ def computeLogin(request):
             del request.session["passErrorMessage"]
         passwordError = "A password is required!"
         request.session["passErrorMessage"] = passwordError
+        request.session.set_expiry(300)
         return redirect("loginregistration:login")
     userCheck = UserLoginReg.objects.filter(username=username).count()
     if userCheck != 1:
@@ -45,6 +48,7 @@ def computeLogin(request):
             del request.session["passErrorMessage"]
         errorMessage = "Wrong Username given!"
         request.session["errorMessage"] = errorMessage
+        request.session.set_expiry(300)
         return redirect("loginregistration:login")
     user = UserLoginReg.objects.get(username=username)
     password = make_password(password, salt="please")
@@ -56,13 +60,7 @@ def computeLogin(request):
         request.session['user'] = user.id
         user.signin = True
         user.save()
-        success = "Welcome User!"
-        template = loader.get_template('homepage.html')
-        context = {
-            'success' : success,
-            'user': user,
-            'userSession' : request.session['user'],
-        }
+        request.session.set_expiry(None)
         return redirect('homepage:homepage')
     elif user.password != password:
         if "errorMessage" in request.session:
@@ -71,6 +69,7 @@ def computeLogin(request):
             del request.session["passErrorMessage"]
         passErrorMessage = "Incorrect password"
         request.session["passErrorMessage"] = passErrorMessage
+        request.session.set_expiry(300)
         return redirect("loginregistration:login")
     return redirect("loginregistration:login")
 
@@ -89,68 +88,93 @@ def register(request):
 
 def computeregistration(request):
     username = request.POST['username']
+    username = username.strip()
     teamName = request.POST['teamname']
     password = request.POST['password']
     confirmPassword = request.POST['passwordconfirm']
     email = request.POST['email']
     if len(username) == 0 or len(teamName) == 0 or len(password) == 0 or len(confirmPassword) == 0 or len(email) == 0:
         errorMessage = "A field is missing"
-        template = loader.get_template('register.html')
-        context = {
-            'errorMessage' : errorMessage
-        }
-        return HttpResponse(template.render(context, request))
+        if "regErrorMessage" in request.session:
+            del request.session["regErrorMessage"]
+        request.session["regErrorMessage"] = errorMessage
+        request.session.set_expiry(300)
+        return redirect("loginregistration:register")
     else:
-        if password != confirmPassword:
+        if len(password) < 7:
+            errorMessage = "Password must be at least 7 charcters long"
+            if "regErrorMessage" in request.session:
+                del request.session["regErrorMessage"]
+            request.session["regErrorMessage"] = errorMessage
+            request.session.set_expiry(300)
+            return redirect("loginregistration:register")
+        elif re.search("[0-9]", password) == None:
+            errorMessage = "Password must contain at least one number"
+            if "regErrorMessage" in request.session:
+                del request.session["regErrorMessage"]
+            request.session["regErrorMessage"] = errorMessage
+            request.session.set_expiry(300)
+            return redirect("loginregistration:register")
+        elif re.search("[A-Z]", password) == None:
+            errorMessage = "Password must contain at least 1 upper case letter"
+            if "regErrorMessage" in request.session:
+                del request.session["regErrorMessage"]
+            request.session["regErrorMessage"] = errorMessage
+            request.session.set_expiry(300)
+            return redirect("loginregistration:register")
+        elif re.search("[a-z]", password) == None:
+            errorMessage = "Password must contain at least 1 lower case letter"
+            if "regErrorMessage" in request.session:
+                del request.session["regErrorMessage"]
+            request.session["regErrorMessage"] = errorMessage
+            request.session.set_expiry(300)
+            return redirect("loginregistration:register")
+        elif password != confirmPassword:
             errorMessage = "Passwords do not match"
-            template = loader.get_template('register.html')
-            context = {
-                'errorMessage' : errorMessage
-            }
-            return HttpResponse(template.render(context, request))
+            if "regErrorMessage" in request.session:
+                del request.session["regErrorMessage"]
+            request.session["regErrorMessage"] = errorMessage
+            request.session.set_expiry(300)
+            return redirect("loginregistration:register")
         elif not re.match("^[a-zA-Z0-9-_]+@[a-zA-Z0-9.]+\.[a-z]{1,3}$", email):
             errorMessage = "Email is not in the correct format"
-            template = loader.get_template('register.html')
-            context = {
-                'errorMessage' : errorMessage
-            }
-            return HttpResponse(template.render(context, request))
+            if "regErrorMessage" in request.session:
+                del request.session["regErrorMessage"]
+            request.session["regErrorMessage"] = errorMessage
+            request.session.set_expiry(300)
+            return redirect("loginregistration:register")
         else:
             possibleUser = UserLoginReg.objects.filter(username=username).count()
             if possibleUser > 0:
                 errorMessage = "That username is taken"
-                template = loader.get_template('register.html')
-                context = {
-                    'errorMessage' : errorMessage
-                }
-                return HttpResponse(template.render(context, request))
+                if "regErrorMessage" in request.session:
+                    del request.session["regErrorMessage"]
+                request.session["regErrorMessage"] = errorMessage
+                request.session.set_expiry(300)
+                return redirect("loginregistration:register")
             possibleUser = UserLoginReg.objects.filter(teamname=teamName).count()
             if possibleUser > 0:
                 errorMessage = "That team name is taken"
-                template = loader.get_template('register.html')
-                context = {
-                    'errorMessage' : errorMessage
-                }
-                return HttpResponse(template.render(context, request))
+                if "regErrorMessage" in request.session:
+                    del request.session["regErrorMessage"]
+                request.session["regErrorMessage"] = errorMessage
+                request.session.set_expiry(300)
+                return redirect("loginregistration:register")
             possibleUser = UserLoginReg.objects.filter(email=email).count()
             if possibleUser > 0:
                 errorMessage = "That email is taken"
-                template = loader.get_template('register.html')
-                context = {
-                    'errorMessage' : errorMessage
-                }
-                return HttpResponse(template.render(context, request))
+                if "regErrorMessage" in request.session:
+                    del request.session["regErrorMessage"]
+                request.session["regErrorMessage"] = errorMessage
+                request.session.set_expiry(300)
+                return redirect("loginregistration:register")
             password = make_password(password, salt="please")
             newUser = UserLoginReg(username=username, email=email, signin=True, password=password, funds=100000000, score=0, teamname=teamName)
             newUser.save()
+            if "regErrorMessage" in request.session:
+                del request.session["regErrorMessage"]
+            request.session.set_expiry(None)
             request.session['user'] = newUser.id
-            success = "Welcome new User!"
-            template = loader.get_template('homepage.html')
-            context = {
-                'success' : success,
-                'user': newUser,
-                'userSession' : request.session['user'],
-            }
             return redirect('homepage:homepage')
 
 def signout(request):
