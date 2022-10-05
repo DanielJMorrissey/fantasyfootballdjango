@@ -6,7 +6,7 @@ from loginregistration.models import UserLoginReg
 """
   need to sort out for log in and reg:
     improve validation - JavaScript
-      validate login password (stopped due migraine)
+      validate register
 """
 
 # Create your views here.
