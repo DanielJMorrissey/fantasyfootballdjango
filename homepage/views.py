@@ -5,8 +5,7 @@ from loginregistration.models import UserLoginReg
 
 """
   need to sort out for log in and reg:
-    improve validation - JavaScript
-      validate register
+    find out how to send email after registration
 """
 
 # Create your views here.
