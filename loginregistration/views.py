@@ -5,6 +5,9 @@ from loginregistration.models import UserLoginReg
 from django.contrib.auth.hashers import make_password, check_password
 import re
 from django.urls import reverse
+from django.conf import settings
+from django.core.mail import send_mail
+
 
 # Create your views here.
 def login(request):
@@ -175,6 +178,11 @@ def computeregistration(request):
                 del request.session["regErrorMessage"]
             request.session.set_expiry(None)
             request.session['user'] = newUser.id
+            subject = "Welcome to Fantasy football my friend!"
+            message = f"Hello {username}, thanks for registering with fantasy football!"
+            email_from = settings.EMAIL_HOST_USER
+            recipient_list = ["danieljohnmorrissey@hotmail.com", ]
+            send_mail( subject, message, email_from, recipient_list, fail_silently=False )
             return redirect('homepage:homepage')
 
 def signout(request):

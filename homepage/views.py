@@ -4,8 +4,11 @@ from django.template import loader
 from loginregistration.models import UserLoginReg
 
 """
-  need to sort out for log in and reg:
-    find out how to send email after registration
+  need to sort out for players:
+    need to find out how to import data into heroku
+    add players to database
+    show players not part of a team
+    show rules for selection
 """
 
 # Create your views here.
