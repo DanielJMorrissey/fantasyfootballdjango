@@ -68,6 +68,7 @@
             </li>
             {% if user.signin %}
               <li><a href="{% url 'players:players' %}">Players</a></li>
+              <li><a href="{% url 'players:team' %}">Your Team</a></li>
               <li><a href="{% url 'transfers:transferIn' %}">Buy Players</a></li>
               <li><a href="{% url 'transfers:transferOut' %}">Sell Players</a></li>
               <li><a href="{% url 'score:score' %}">Calculate Score</a></li>

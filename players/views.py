@@ -19,3 +19,19 @@ def players(request):
       return HttpResponse(template.render(context, request))
   else:
     return redirect("loginregistration:login")
+
+def team(request):
+  userLoggedIn = ""
+  if "user" in request.session:
+    userLoggedIn = UserLoginReg.objects.get(id=request.session['user'])
+    if userLoggedIn:
+      
+      context= {
+        'user' : userLoggedIn,
+        'request': request.session['user']
+      }
+    template = loader.get_template('team.html')
+    if userLoggedIn:
+      return HttpResponse(template.render(context, request))
+  else:
+    return redirect("loginregistration:login")
