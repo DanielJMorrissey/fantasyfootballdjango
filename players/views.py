@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.template import loader
 from loginregistration.models import UserLoginReg
+from players.models import PlayerList
 
 # Create your views here.
 def players(request):
@@ -9,8 +10,9 @@ def players(request):
   if "user" in request.session:
     userLoggedIn = UserLoginReg.objects.get(id=request.session['user'])
     if userLoggedIn:
-      
+      playersList = PlayerList.objects.filter(userid=None)
       context= {
+        'playersList' : playersList,
         'user' : userLoggedIn,
         'request': request.session['user']
       }

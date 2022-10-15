@@ -6,9 +6,8 @@ from loginregistration.models import UserLoginReg
 """
   need to sort out for players:
     need to find out how to import data into heroku
-    add players to database
-    show players not part of a team
     show rules for selection
+    add players to users team
 """
 
 # Create your views here.
