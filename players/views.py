@@ -37,3 +37,13 @@ def team(request):
       return HttpResponse(template.render(context, request))
   else:
     return redirect("loginregistration:login")
+
+
+def addPlayer(request, id):
+  if PlayerList.objects.filter(id=id).count() > 0:
+    player = PlayerList.objects.get(id=id)
+    player.userid = int(request.session["user"])
+    player.save()
+    return redirect("players:players")
+  else:
+    return redirect("homepage:homepage")
