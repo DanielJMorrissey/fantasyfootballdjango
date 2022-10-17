@@ -27,11 +27,18 @@ def team(request):
   if "user" in request.session:
     userLoggedIn = UserLoginReg.objects.get(id=request.session['user'])
     if userLoggedIn:
-      
-      context= {
-        'user' : userLoggedIn,
-        'request': request.session['user']
-      }
+      if PlayerList.objects.filter(userid=request.session["user"]).count() > 0:
+        playersList = PlayerList.objects.filter(userid=request.session["user"])
+        context= {
+          "playersList" : playersList,
+          'user' : userLoggedIn,
+          'request': request.session['user']
+        }
+      else:
+        context= {
+          'user' : userLoggedIn,
+          'request': request.session['user']
+        }
     template = loader.get_template('team.html')
     if userLoggedIn:
       return HttpResponse(template.render(context, request))

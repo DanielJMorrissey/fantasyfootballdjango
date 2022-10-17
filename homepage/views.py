@@ -7,7 +7,7 @@ from loginregistration.models import UserLoginReg
   need to sort out for players:
     need to find out how to import data into heroku
     show rules for selection
-    add players to users team (created a view that changes the userid (fk) of player, now just need to do display users team on team page, should be similar to player page)
+    need to process player costs and rules in views
 """
 
 # Create your views here.
