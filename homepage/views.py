@@ -6,8 +6,8 @@ from loginregistration.models import UserLoginReg
 """
   need to sort out for players:
     need to find out how to import data into heroku
-    show rules for selection
-    need to process player costs and rules in views
+    add more players
+    need to finish player validation
 """
 
 # Create your views here.

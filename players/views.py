@@ -48,8 +48,19 @@ def team(request):
 
 def addPlayer(request, id):
   if PlayerList.objects.filter(id=id).count() > 0:
+    user = UserLoginReg.objects.get(id=request.session["user"])
     player = PlayerList.objects.get(id=id)
+    if player.userid != None:
+      return redirect("homepage:homepage")
+    if PlayerList.objects.filter(userid=user.id, position="goalkeeper").count() > 0:
+      return redirect("homepage:homepage")
+    if PlayerList.objects.filter(userid=user.id, position="defender").count() > 3:
+      return redirect("homepage:homepage")
     player.userid = int(request.session["user"])
+    user.funds = user.funds - player.value
+    if user.funds <0:
+      return redirect("homepage:homepage")
+    user.save()
     player.save()
     return redirect("players:players")
   else:
