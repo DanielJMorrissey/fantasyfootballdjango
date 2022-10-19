@@ -6,8 +6,10 @@ from loginregistration.models import UserLoginReg
 """
   need to sort out for players:
     need to find out how to import data into heroku
-    add more players
-    need to finish player validation
+    will need to test that only eleven players can be added and can add different positions as long as less than 11 players
+    display user league table
+    create transfer in page
+    sort out error messages
 """
 
 # Create your views here.

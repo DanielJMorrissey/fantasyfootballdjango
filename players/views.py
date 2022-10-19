@@ -45,16 +45,20 @@ def team(request):
   else:
     return redirect("loginregistration:login")
 
-
+# will need to replace homepage redirects with error messages
 def addPlayer(request, id):
   if PlayerList.objects.filter(id=id).count() > 0:
     user = UserLoginReg.objects.get(id=request.session["user"])
     player = PlayerList.objects.get(id=id)
     if player.userid != None:
       return redirect("homepage:homepage")
-    if PlayerList.objects.filter(userid=user.id, position="goalkeeper").count() > 0:
+    if PlayerList.objects.filter(userid=user.id, position="goalkeeper").count() > 0 and player.position == "goalkeeper":
       return redirect("homepage:homepage")
-    if PlayerList.objects.filter(userid=user.id, position="defender").count() > 3:
+    if PlayerList.objects.filter(userid=user.id, position="defender").count() > 3 and player.position == "defender":
+      return redirect("homepage:homepage")
+    if PlayerList.objects.filter(userid=user.id, position="midfielder").count() > 3 and player.position == "midfielder":
+      return redirect("homepage:homepage")
+    if PlayerList.objects.filter(userid=user.id, position="forward").count() > 1 and player.position == "forward":
       return redirect("homepage:homepage")
     player.userid = int(request.session["user"])
     user.funds = user.funds - player.value
