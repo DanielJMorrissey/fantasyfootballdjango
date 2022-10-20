@@ -1179,3 +1179,12 @@ a:hover {
   color: #fff;
   border: 1px solid transparent;
 }
+
+/*
+  my own css
+*/
+
+#userLeagueTable{
+  height: 500px;
+  overflow-y: auto;
+}

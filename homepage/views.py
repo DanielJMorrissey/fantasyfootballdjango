@@ -7,7 +7,7 @@ from loginregistration.models import UserLoginReg
   need to sort out for players:
     need to find out how to import data into heroku
     will need to test that only eleven players can be added and can add different positions as long as less than 11 players
-    display user league table
+    sort out headings for user league table and bottom borders
     create transfer in page
     sort out error messages
 """
@@ -15,11 +15,13 @@ from loginregistration.models import UserLoginReg
 # Create your views here.
 def home(request):
   userLoggedIn = ""
+  userLeague = UserLoginReg.objects.all().order_by("-score")
   if "user" in request.session:
     userLoggedIn = UserLoginReg.objects.get(id=request.session['user'])
     if userLoggedIn:
       
       context= {
+        'userLeague' : userLeague,
         'user' : userLoggedIn,
         'request': request.session['user']
       }
@@ -27,4 +29,7 @@ def home(request):
   if userLoggedIn:
     return HttpResponse(template.render(context, request))
   else:
-    return HttpResponse(template.render())
+    context = {
+      'userLeague' : userLeague,
+    }
+    return HttpResponse(template.render(context, request))
